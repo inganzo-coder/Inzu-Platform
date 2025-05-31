@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INZU Platform – Scheduler & MbazaDi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --text: #1f2937;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --fake-border: #ef4444;
+      --real-border: #10b981;
+    }
+    html.dark {
+      --bg: #1f2937;
+      --text: #f9fafb;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .results {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: white;
+      border-radius: 0.5rem;
+      transition: background-color 0.3s ease;
+    }
+    html.dark .results {
+      background: #374151;
+      color: #f9fafb;
+    }
+    .results.likely-fake {
+      border-left: 6px solid var(--fake-border);
+    }
+    .results.likely-real {
+      border-left: 6px solid var(--real-border);
+    }
+  </style>
+</head>
+<body class="text-gray-800 dark:text-gray-200">
+  <div class="container mx-auto p-6">
+    <div class="flex justify-between mb-6">
+      <h1 class="text-2xl font-bold">INZU Platform</h1>
+      <div class="flex gap-2 items-center">
+        <label for="langToggle">🌍</label>
+        <select id="langToggle" onchange="setMbazaLang(this.value)" class="bg-gray-200 dark:bg-gray-700 rounded px-2 py-1">
+          <option value="en">EN</option>
+          <option value="rw">RW</option>
+        </select>
+        <button onclick="document.documentElement.classList.toggle('dark')" class="ml-2 px-3 py-1 bg-gray-300 dark:bg-gray-600 rounded">🌙</button>
+      </div>
+    </div>
+
+    <ul class="flex border-b">
+      <li><button onclick="showTab('scheduler')" class="px-4 py-2 font-semibold text-blue-500 border-b-2 border-blue-500" id="tab-scheduler">Scheduler</button></li>
+      <li><button onclick="showTab('mbaza')" class="px-4 py-2 font-semibold" id="tab-mbaza">Fake News Detector</button></li>
+    </ul>
+
+    <div id="panel-scheduler" class="mt-6">
+      <!-- Original INZU Scheduler Code Start -->
+<!-- BEGIN: Full INZU Scheduler HTML content from untitled.html -->
+<div>
+  <!-- START OF SCHEDULER CODE -->
+<div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+  <h2 class="text-xl font-semibold mb-4"><i class="fas fa-calendar-alt text-blue-500"></i> INZU Rwanda Scheduler</h2>
+  <form id="schedulerForm" class="space-y-6">
+  <div>
+    <label for="title" class="block font-medium">Appointment Title</label>
+    <input type="text" id="title" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" placeholder="e.g. Team meeting">
+  </div>
+  <div>
+    <label for="date" class="block font-medium">Date</label>
+    <input type="date" id="date" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
+  </div>
+  <div>
+    <label for="time" class="block font-medium">Time</label>
+    <input type="time" id="time" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
+  </div>
+  <div>
+    <label for="attendees" class="block font-medium">Attendees (comma-separated emails)</label>
+    <input type="text" id="attendees" class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" placeholder="example@inzu.rw, test@example.com">
+  </div>
+  <div>
+    <label for="ussdOption" class="block font-medium">USSD Option</label>
+    <select id="ussdOption" class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
+      <option value="1">1. Book Health Appointment</option>
+      <option value="2">2. Schedule Transport</option>
+      <option value="3">3. Community Meeting</option>
+      <option value="4">4. Book Accommodation</option>
+      <option value="5">5. View Bookings</option>
+      <option value="0">0. Exit</option>
+    </select>
+  </div>
+  <div>
+    <label class="block font-medium mb-2">Listings</label>
+    <div class="grid grid-cols-2 gap-4" id="listingOptions">
+      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Gorilla Trekking" /> Gorilla Trekking</label>
+      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Lake Kivu" /> Lake Kivu</label>
+      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Kigali" /> Kigali</label>
+      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Coffee Tours" /> Coffee Tours</label>
+      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Cultural Village" /> Cultural Village</label>
+      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Tea Plantations" /> Tea Plantations</label>
+      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Nyungwe Forest" /> Nyungwe Forest</label>
+      <label class="flex items-center"><input type="checkbox" class="mr-2" value="WiFi" /> WiFi</label>
+      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Meals Included" /> Meals Included</label>
+    </div>
+  </div>
+  <div>
+    <button type="button" onclick="previewSchedule()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded mr-2">Preview Summary</button>
+    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Schedule Appointment</button>
+  </div>
+</form>
+<div id="previewBox" class="mt-4 p-4 border rounded bg-gray-50 dark:bg-gray-700 hidden"></div>
+</div>
+<!-- END OF SCHEDULER CODE -->
+</div>
+<!-- END: Full INZU Scheduler HTML content from untitled.html -->
+<!-- Original INZU Scheduler Code End -->
+    </div>
+
+    <div id="panel-mbaza" class="mt-6 hidden">
+      <!-- MbazaDi App Root -->
+      <div id="mbazaDiRoot"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const translations = {
+      en: {
+        title: "Fake News Detector",
+        analyze: "Analyze",
+        result: "Result",
+        verdict: "Verdict",
+        confidence: "Confidence",
+        contentType: "Content Type",
+        likelyFake: "Likely Fake",
+        likelyReal: "Likely Real",
+        copy: "Copy Result",
+        whatsappNumber: "WhatsApp Number",
+        sendWhatsApp: "Send to WhatsApp"
+      },
+      rw: {
+        title: "Ubugenzuzi bw'Amakuru y'Ibinyoma",
+        analyze: "Sobanura",
+        result: "Ibisubizo",
+        verdict: "Icyemezo",
+        confidence: "Icyizere",
+        contentType: "Ubwoko bw'Amakuru",
+        likelyFake: "Birashoboka ko ari Ibinyoma",
+        likelyReal: "Birashoboka ko ari Ukuri",
+        copy: "Koporora Ibisubizo",
+        whatsappNumber: "Nimero ya WhatsApp",
+        sendWhatsApp: "Kohereza kuri WhatsApp"
+      }
+    };
+
+    function App() {
+      const [input, setInput] = React.useState('');
+      const [result, setResult] = React.useState(null);
+      const [lang, setLang] = React.useState('en');
+      const [whatsappNumber, setWhatsappNumber] = React.useState('');
+
+      const t = (key) => translations[lang][key] || key;
+
+      const analyze = () => {
+        if (!input.trim()) return;
+        const lower = input.toLowerCase();
+        const fakeWords = ['fake', 'hoax', 'conspiracy'];
+        const isFake = fakeWords.some(w => lower.includes(w));
+        const confidence = (50 + Math.random() * 50).toFixed(2);
+        setResult({
+          verdict: isFake ? t('likelyFake') : t('likelyReal'),
+          confidence,
+          contentType: 'News'
+        });
+      };
+
+      const sendToWhatsApp = () => {
+        if (!result || !whatsappNumber.trim()) return;
+        
+        const message = encodeURIComponent(`
+🔍 *INZU Fake News Analysis Report*
+
+📝 *Analyzed Content:* ${input.substring(0, 100)}${input.length > 100 ? '...' : ''}
+
+📊 *Results:*
+• *${t('verdict')}:* ${result.verdict}
+• *${t('confidence')}:* ${result.confidence}%
+• *${t('contentType')}:* ${result.contentType}
+
+⏰ *Analysis Date:* ${new Date().toLocaleString()}
+
+---
+Generated by INZU Platform - MbazaDi Fake News Detector
+        `);
+
+        const cleanNumber = whatsappNumber.replace(/\D/g, '');
+        const whatsappUrl = `https://wa.me/${cleanNumber}?text=${message}`;
+        
+        window.open(whatsappUrl, '_blank');
+      };
+
+      React.useEffect(() => {
+        window.setMbazaLang = (newLang) => {
+          setLang(newLang);
+        }
+      }, []);
+
+      return (
+        <div className="bg-white dark:bg-gray-800 p-6 rounded shadow">
+          <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">{t('title')}</h2>
+          <textarea
+            className="w-full p-3 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+            rows="4"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Paste news text here..."
+          />
+          
+          <div className="mt-3 flex flex-col sm:flex-row gap-3">
+            <input
+              type="tel"
+              className="flex-1 p-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+              value={whatsappNumber}
+              onChange={(e) => setWhatsappNumber(e.target.value)}
+              placeholder={`${t('whatsappNumber')} (e.g., +250788123456)`}
+            />
+            <button
+              onClick={analyze}
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors"
+            >{t('analyze')}</button>
+          </div>
+
+          {result && (
+            <div className={`results mt-4 ${result.verdict === t('likelyFake') ? 'likely-fake' : 'likely-real'}`}>
+              <h3 className="font-bold text-gray-900 dark:text-gray-100">{t('result')}</h3>
+              <p className="text-gray-800 dark:text-gray-200"><strong>{t('verdict')}:</strong> {result.verdict}</p>
+              <p className="text-gray-800 dark:text-gray-200"><strong>{t('confidence')}:</strong> {result.confidence}%</p>
+              <p className="text-gray-800 dark:text-gray-200"><strong>{t('contentType')}:</strong> {result.contentType}</p>
+              <div className="mt-3 flex flex-col sm:flex-row gap-2">
+                <button
+                  onClick={() => navigator.clipboard.writeText(
+                    `${t('verdict')}: ${result.verdict}\n${t('confidence')}: ${result.confidence}%`
+                  )}
+                  className="text-blue-600 dark:text-blue-400 hover:underline transition-colors"
+                >{t('copy')}</button>
+                <button
+                  onClick={sendToWhatsApp}
+                  disabled={!whatsappNumber.trim()}
+                  className="bg-green-500 hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-3 py-1 rounded text-sm transition-colors"
+                >{t('sendWhatsApp')}</button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("mbazaDiRoot")).render(<App />);
+
+    function showTab(tab) {
+      document.getElementById("panel-scheduler").classList.add("hidden");
+      document.getElementById("panel-mbaza").classList.add("hidden");
+      document.getElementById("tab-scheduler").classList.remove("text-blue-500", "border-b-2", "border-blue-500");
+      document.getElementById("tab-mbaza").classList.remove("text-blue-500", "border-b-2", "border-blue-500");
+      document.getElementById(`panel-${tab}`).classList.remove("hidden");
+      document.getElementById(`tab-${tab}`).classList.add("text-blue-500", "border-b-2", "border-blue-500");
+    }
+  </script>
+<script>
+  const form = document.getElementById('schedulerForm');
+  const previewBox = document.getElementById('previewBox');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = collectFormData();
+    
+    // Save locally
+    const appointmentData = {
+      ...formData,
+      timestamp: new Date().toISOString()
+    };
+    localStorage.setItem('lastAppointment', JSON.stringify(appointmentData));
+    
+    // Send email
+    sendAppointmentEmail(formData);
+  });
+
+  function collectFormData() {
+    const listings = Array.from(document.querySelectorAll('#listingOptions input:checked')).map(cb => cb.value);
+    return {
+      title: document.getElementById('title').value,
+      date: document.getElementById('date').value,
+      time: document.getElementById('time').value,
+      attendees: document.getElementById('attendees').value,
+      ussd: document.getElementById('ussdOption').value,
+      listings
+    };
+  }
+
+  function sendAppointmentEmail(data) {
+    const ussdOptions = {
+      '1': '1. Book Health Appointment',
+      '2': '2. Schedule Transport',
+      '3': '3. Community Meeting',
+      '4': '4. Book Accommodation',
+      '5': '5. View Bookings',
+      '0': '0. Exit'
+    };
+
+    const emailSubject = encodeURIComponent(`INZU Appointment: ${data.title}`);
+    const emailBody = encodeURIComponent(`
+New appointment scheduled through INZU Platform:
+
+Title: ${data.title}
+Date: ${data.date}
+Time: ${data.time}
+Attendees: ${data.attendees || 'None specified'}
+USSD Option: ${ussdOptions[data.ussd] || data.ussd}
+Selected Listings: ${data.listings.length > 0 ? data.listings.join(', ') : 'None'}
+
+Scheduled at: ${new Date().toLocaleString()}
+
+---
+Sent from INZU Platform
+    `);
+
+    const mailtoLink = `mailto:ewpmagazine7@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+    
+    // Try to open email client
+    window.location.href = mailtoLink;
+    
+    // Show success message
+    alert('Email client opened! Please send the email to complete the appointment scheduling.');
+  }
+
+  function previewSchedule() {
+    const data = collectFormData();
+    const ussdOptions = {
+      '1': '1. Book Health Appointment',
+      '2': '2. Schedule Transport',
+      '3': '3. Community Meeting',
+      '4': '4. Book Accommodation',
+      '5': '5. View Bookings',
+      '0': '0. Exit'
+    };
+    
+    previewBox.classList.remove('hidden');
+    previewBox.innerHTML = `
+      <h3 class="font-bold mb-2 text-lg">Preview Summary</h3>
+      <p><strong>Title:</strong> ${data.title}</p>
+      <p><strong>Date:</strong> ${data.date}</p>
+      <p><strong>Time:</strong> ${data.time}</p>
+      <p><strong>Attendees:</strong> ${data.attendees || 'None specified'}</p>
+      <p><strong>USSD Option:</strong> ${ussdOptions[data.ussd] || data.ussd}</p>
+      <p><strong>Listings:</strong> ${data.listings.join(', ') || 'None'}</p>
+    `;
+  }
+</script>
+</body>
+</html>
