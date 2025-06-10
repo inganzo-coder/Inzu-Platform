@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INZU Platform – Scheduler & MbazaDi</title>
+  <title>INZU Platform – Scheduler, MbazaDi & Hotels</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { darkMode: 'class' };
@@ -45,6 +45,16 @@
     .results.likely-real {
       border-left: 6px solid var(--real-border);
     }
+    .hotel-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hotel-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    .payment-modal {
+      backdrop-filter: blur(4px);
+    }
   </style>
 </head>
 <body class="text-gray-800 dark:text-gray-200">
@@ -64,73 +74,80 @@
     <ul class="flex border-b">
       <li><button onclick="showTab('scheduler')" class="px-4 py-2 font-semibold text-blue-500 border-b-2 border-blue-500" id="tab-scheduler">Scheduler</button></li>
       <li><button onclick="showTab('mbaza')" class="px-4 py-2 font-semibold" id="tab-mbaza">Fake News Detector</button></li>
+      <li><button onclick="showTab('hotels')" class="px-4 py-2 font-semibold" id="tab-hotels">Hotels</button></li>
     </ul>
 
     <div id="panel-scheduler" class="mt-6">
-      <!-- Original INZU Scheduler Code Start -->
-<!-- BEGIN: Full INZU Scheduler HTML content from untitled.html -->
-<div>
-  <!-- START OF SCHEDULER CODE -->
-<div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
-  <h2 class="text-xl font-semibold mb-4"><i class="fas fa-calendar-alt text-blue-500"></i> INZU Rwanda Scheduler</h2>
-  <form id="schedulerForm" class="space-y-6">
-  <div>
-    <label for="title" class="block font-medium">Appointment Title</label>
-    <input type="text" id="title" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" placeholder="e.g. Team meeting">
-  </div>
-  <div>
-    <label for="date" class="block font-medium">Date</label>
-    <input type="date" id="date" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
-  </div>
-  <div>
-    <label for="time" class="block font-medium">Time</label>
-    <input type="time" id="time" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
-  </div>
-  <div>
-    <label for="attendees" class="block font-medium">Attendees (comma-separated emails)</label>
-    <input type="text" id="attendees" class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" placeholder="example@inzu.rw, test@example.com">
-  </div>
-  <div>
-    <label for="ussdOption" class="block font-medium">USSD Option</label>
-    <select id="ussdOption" class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
-      <option value="1">1. Book Health Appointment</option>
-      <option value="2">2. Schedule Transport</option>
-      <option value="3">3. Community Meeting</option>
-      <option value="4">4. Book Accommodation</option>
-      <option value="5">5. View Bookings</option>
-      <option value="0">0. Exit</option>
-    </select>
-  </div>
-  <div>
-    <label class="block font-medium mb-2">Listings</label>
-    <div class="grid grid-cols-2 gap-4" id="listingOptions">
-      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Gorilla Trekking" /> Gorilla Trekking</label>
-      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Lake Kivu" /> Lake Kivu</label>
-      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Kigali" /> Kigali</label>
-      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Coffee Tours" /> Coffee Tours</label>
-      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Cultural Village" /> Cultural Village</label>
-      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Tea Plantations" /> Tea Plantations</label>
-      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Nyungwe Forest" /> Nyungwe Forest</label>
-      <label class="flex items-center"><input type="checkbox" class="mr-2" value="WiFi" /> WiFi</label>
-      <label class="flex items-center"><input type="checkbox" class="mr-2" value="Meals Included" /> Meals Included</label>
-    </div>
-  </div>
-  <div>
-    <button type="button" onclick="previewSchedule()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded mr-2">Preview Summary</button>
-    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Schedule Appointment</button>
-  </div>
-</form>
-<div id="previewBox" class="mt-4 p-4 border rounded bg-gray-50 dark:bg-gray-700 hidden"></div>
-</div>
-<!-- END OF SCHEDULER CODE -->
-</div>
-<!-- END: Full INZU Scheduler HTML content from untitled.html -->
-<!-- Original INZU Scheduler Code End -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+        <h2 class="text-xl font-semibold mb-4"><i class="fas fa-calendar-alt text-blue-500"></i> INZU Rwanda Scheduler</h2>
+        <form id="schedulerForm" class="space-y-6">
+        <div>
+          <label for="title" class="block font-medium">Appointment Title</label>
+          <input type="text" id="title" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" placeholder="e.g. Team meeting">
+        </div>
+        <div>
+          <label for="date" class="block font-medium">Date</label>
+          <input type="date" id="date" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
+        </div>
+        <div>
+          <label for="time" class="block font-medium">Time</label>
+          <input type="time" id="time" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
+        </div>
+        <div>
+          <label for="attendees" class="block font-medium">Attendees (comma-separated emails)</label>
+          <input type="text" id="attendees" class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" placeholder="example@inzu.rw, test@example.com">
+        </div>
+        <div>
+          <label for="ussdOption" class="block font-medium">USSD Option</label>
+          <select id="ussdOption" class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
+            <option value="1">1. Book Health Appointment</option>
+            <option value="2">2. Schedule Transport</option>
+            <option value="3">3. Community Meeting</option>
+            <option value="4">4. Book Accommodation</option>
+            <option value="5">5. View Bookings</option>
+            <option value="0">0. Exit</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-medium mb-2">Listings</label>
+          <div class="grid grid-cols-2 gap-4" id="listingOptions">
+            <label class="flex items-center"><input type="checkbox" class="mr-2" value="Gorilla Trekking" /> Gorilla Trekking</label>
+            <label class="flex items-center"><input type="checkbox" class="mr-2" value="Lake Kivu" /> Lake Kivu</label>
+            <label class="flex items-center"><input type="checkbox" class="mr-2" value="Kigali" /> Kigali</label>
+            <label class="flex items-center"><input type="checkbox" class="mr-2" value="Coffee Tours" /> Coffee Tours</label>
+            <label class="flex items-center"><input type="checkbox" class="mr-2" value="Cultural Village" /> Cultural Village</label>
+            <label class="flex items-center"><input type="checkbox" class="mr-2" value="Tea Plantations" /> Tea Plantations</label>
+            <label class="flex items-center"><input type="checkbox" class="mr-2" value="Nyungwe Forest" /> Nyungwe Forest</label>
+            <label class="flex items-center"><input type="checkbox" class="mr-2" value="WiFi" /> WiFi</label>
+            <label class="flex items-center"><input type="checkbox" class="mr-2" value="Meals Included" /> Meals Included</label>
+          </div>
+        </div>
+        <div>
+          <button type="button" onclick="previewSchedule()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded mr-2">Preview Summary</button>
+          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Schedule Appointment</button>
+        </div>
+      </form>
+      <div id="previewBox" class="mt-4 p-4 border rounded bg-gray-50 dark:bg-gray-700 hidden"></div>
+      </div>
     </div>
 
     <div id="panel-mbaza" class="mt-6 hidden">
-      <!-- MbazaDi App Root -->
       <div id="mbazaDiRoot"></div>
+    </div>
+
+    <div id="panel-hotels" class="mt-6 hidden">
+      <div id="hotelsRoot"></div>
+    </div>
+  </div>
+
+  <!-- Payment Modal -->
+  <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 payment-modal hidden flex items-center justify-center z-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold">Complete Payment</h3>
+        <button onclick="closePaymentModal()" class="text-gray-500 hover:text-gray-700">&times;</button>
+      </div>
+      <div id="paymentContent"></div>
     </div>
   </div>
 
@@ -168,7 +185,71 @@
       }
     };
 
-    function App() {
+    // Hotel data
+    const hotels = [
+      {
+        id: 1,
+        name: "Kigali Serena Hotel",
+        location: "Kigali",
+        rating: 5,
+        price: 180,
+        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400",
+        amenities: ["WiFi", "Pool", "Spa", "Restaurant", "Gym"],
+        description: "Luxury hotel in the heart of Kigali with panoramic city views."
+      },
+      {
+        id: 2,
+        name: "Volcanoes Safaris Mount Gahinga Lodge",
+        location: "Mgahinga",
+        rating: 4,
+        price: 320,
+        image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400",
+        amenities: ["WiFi", "Restaurant", "Bar", "Garden", "Fireplace"],
+        description: "Eco-lodge near Volcanoes National Park, perfect for gorilla trekking."
+      },
+      {
+        id: 3,
+        name: "Lake Kivu Serena Hotel",
+        location: "Gisenyi",
+        rating: 4,
+        price: 145,
+        image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400",
+        amenities: ["WiFi", "Beach Access", "Restaurant", "Bar", "Water Sports"],
+        description: "Beachfront hotel on the shores of beautiful Lake Kivu."
+      },
+      {
+        id: 4,
+        name: "Nyungwe Forest Lodge",
+        location: "Nyungwe",
+        rating: 5,
+        price: 280,
+        image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400",
+        amenities: ["WiFi", "Restaurant", "Spa", "Forest Tours", "Tea Tasting"],
+        description: "Luxury eco-lodge in the heart of Nyungwe National Park."
+      },
+      {
+        id: 5,
+        name: "The Retreat by Heaven",
+        location: "Kigali",
+        rating: 4,
+        price: 95,
+        image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=400",
+        amenities: ["WiFi", "Pool", "Restaurant", "Garden", "Conference Room"],
+        description: "Boutique hotel with modern amenities and tranquil atmosphere."
+      },
+      {
+        id: 6,
+        name: "Ubuki Lodge",
+        location: "Lake Burera",
+        rating: 3,
+        price: 75,
+        image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=400",
+        amenities: ["WiFi", "Restaurant", "Bar", "Lake Views", "Boat Tours"],
+        description: "Scenic lodge overlooking the twin lakes with stunning mountain views."
+      }
+    ];
+
+    function MbazaApp() {
       const [input, setInput] = React.useState('');
       const [result, setResult] = React.useState(null);
       const [lang, setLang] = React.useState('en');
@@ -270,60 +351,372 @@ Generated by INZU Platform - MbazaDi Fake News Detector
       );
     }
 
-    ReactDOM.createRoot(document.getElementById("mbazaDiRoot")).render(<App />);
+    function HotelsApp() {
+      const [selectedHotel, setSelectedHotel] = React.useState(null);
+      const [searchTerm, setSearchTerm] = React.useState('');
+      const [priceRange, setPriceRange] = React.useState([0, 500]);
+      const [selectedLocation, setSelectedLocation] = React.useState('');
+      const [checkIn, setCheckIn] = React.useState('');
+      const [checkOut, setCheckOut] = React.useState('');
+      const [guests, setGuests] = React.useState(1);
+
+      const locations = [...new Set(hotels.map(h => h.location))];
+      
+      const filteredHotels = hotels.filter(hotel => {
+        return hotel.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+               hotel.price >= priceRange[0] && hotel.price <= priceRange[1] &&
+               (selectedLocation === '' || hotel.location === selectedLocation);
+      });
+
+      const bookHotel = (hotel) => {
+        if (!checkIn || !checkOut) {
+          alert('Please select check-in and check-out dates');
+          return;
+        }
+        setSelectedHotel(hotel);
+        showPaymentModal(hotel);
+      };
+
+      return (
+        <div className="bg-white dark:bg-gray-800 p-6 rounded shadow">
+          <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-gray-100">
+            <i className="fas fa-hotel text-blue-500 mr-2"></i>
+            Rwanda Hotels & Accommodation
+          </h2>
+          
+          {/* Search and Filters */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <input
+              type="text"
+              placeholder="Search hotels..."
+              className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <select
+              className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+            >
+              <option value="">All Locations</option>
+              {locations.map(loc => (
+                <option key={loc} value={loc}>{loc}</option>
+              ))}
+            </select>
+            <input
+              type="date"
+              className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+              value={checkIn}
+              onChange={(e) => setCheckIn(e.target.value)}
+              placeholder="Check-in"
+            />
+            <input
+              type="date"
+              className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+              value={checkOut}
+              onChange={(e) => setCheckOut(e.target.value)}
+              placeholder="Check-out"
+            />
+          </div>
+
+          <div className="flex items-center gap-4 mb-6">
+            <label className="flex items-center gap-2">
+              <span>Guests:</span>
+              <select 
+                className="p-1 border rounded dark:bg-gray-700 dark:border-gray-600"
+                value={guests}
+                onChange={(e) => setGuests(parseInt(e.target.value))}
+              >
+                {[1,2,3,4,5,6].map(n => (
+                  <option key={n} value={n}>{n}</option>
+                ))}
+              </select>
+            </label>
+            <label className="flex items-center gap-2">
+              <span>Max Price: ${priceRange[1]}</span>
+              <input
+                type="range"
+                min="0"
+                max="500"
+                value={priceRange[1]}
+                onChange={(e) => setPriceRange([0, parseInt(e.target.value)])}
+                className="w-24"
+              />
+            </label>
+          </div>
+
+          {/* Hotel Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredHotels.map(hotel => (
+              <div key={hotel.id} className="hotel-card bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow">
+                <img 
+                  src={hotel.image} 
+                  alt={hotel.name}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-bold text-lg">{hotel.name}</h3>
+                    <div className="flex items-center text-yellow-400">
+                      {[...Array(hotel.rating)].map((_, i) => (
+                        <i key={i} className="fas fa-star text-sm"></i>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">
+                    <i className="fas fa-map-marker-alt mr-1"></i>
+                    {hotel.location}
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-3">
+                    {hotel.description}
+                  </p>
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {hotel.amenities.slice(0, 3).map(amenity => (
+                      <span key={amenity} className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded">
+                        {amenity}
+                      </span>
+                    ))}
+                    {hotel.amenities.length > 3 && (
+                      <span className="text-xs text-gray-500">+{hotel.amenities.length - 3} more</span>
+                    )}
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <span className="text-2xl font-bold text-green-600">${hotel.price}</span>
+                      <span className="text-gray-500 text-sm">/night</span>
+                    </div>
+                    <button
+                      onClick={() => bookHotel(hotel)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors"
+                    >
+                      Book Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {filteredHotels.length === 0 && (
+            <div className="text-center py-8 text-gray-500">
+              <i className="fas fa-search text-4xl mb-4"></i>
+              <p>No hotels found matching your criteria</p>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("mbazaDiRoot")).render(<MbazaApp />);
+    ReactDOM.createRoot(document.getElementById("hotelsRoot")).render(<HotelsApp />);
 
     function showTab(tab) {
-      document.getElementById("panel-scheduler").classList.add("hidden");
-      document.getElementById("panel-mbaza").classList.add("hidden");
-      document.getElementById("tab-scheduler").classList.remove("text-blue-500", "border-b-2", "border-blue-500");
-      document.getElementById("tab-mbaza").classList.remove("text-blue-500", "border-b-2", "border-blue-500");
+      const tabs = ['scheduler', 'mbaza', 'hotels'];
+      tabs.forEach(t => {
+        document.getElementById(`panel-${t}`).classList.add("hidden");
+        document.getElementById(`tab-${t}`).classList.remove("text-blue-500", "border-b-2", "border-blue-500");
+      });
       document.getElementById(`panel-${tab}`).classList.remove("hidden");
       document.getElementById(`tab-${tab}`).classList.add("text-blue-500", "border-b-2", "border-blue-500");
     }
+
+    function showPaymentModal(hotel) {
+      const modal = document.getElementById('paymentModal');
+      const content = document.getElementById('paymentContent');
+      
+      const checkIn = document.querySelector('input[type="date"]').value;
+      const checkOut = document.querySelector('input[type="date"]:nth-of-type(2)').value;
+      const nights = checkIn && checkOut ? Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)) : 1;
+      const total = hotel.price * nights;
+      
+      content.innerHTML = `
+        <div class="mb-4">
+          <h4 class="font-bold text-lg mb-2">${hotel.name}</h4>
+          <p class="text-gray-600 dark:text-gray-300">
+            <i class="fas fa-calendar mr-1"></i>
+            ${checkIn || 'TBD'} - ${checkOut || 'TBD'} (${nights} night${nights > 1 ? 's' : ''})
+          </p>
+          <p class="text-2xl font-bold text-green-600 mt-2">$${total}</p>
+        </div>
+        
+        <form id="paymentForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Payment Method</label>
+            <select class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required>
+              <option value="">Select Payment Method</option>
+              <option value="momo">MTN Mobile Money</option>
+              <option value="airtel">Airtel Money</option>
+              <option value="card">Credit/Debit Card</option>
+              <option value="bank">Bank Transfer</option>
+            </select>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium mb-1">Full Name</label>
+            <input type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium mb-1">Phone Number</label>
+            <input type="tel" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="+250788123456" required>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium mb-1">Email</label>
+            <input type="email" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required>
+          </div>
+          
+          <div class="flex gap-2 pt-4">
+            <button type="button" onclick="closePaymentModal()" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded transition-colors">
+              Cancel
+            </button>
+            <button type="submit" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded transition-colors">
+              Pay $${total}
+            </button>
+          </div>
+        </form>
+      `;
+      
+      modal.classList.remove('hidden');
+      
+      document.getElementById('paymentForm').onsubmit = (e) => {
+        e.preventDefault();
+        processPayment(hotel, total);
+      };
+    }
+
+    function closePaymentModal() {
+      document.getElementById('paymentModal').classList.add('hidden');
+    }
+
+    function processPayment(hotel, amount) {
+      // Simulate payment processing
+      const paymentData = {
+        hotel: hotel.name,
+        amount: amount,
+        timestamp: new Date().toISOString(),
+        status: 'confirmed'
+      };
+      
+      // Show loading
+      const paymentContent = document.getElementById('paymentContent');
+      paymentContent.innerHTML = `
+        <div class="text-center py-8">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p>Processing payment...</p>
+        </div>
+      `;
+      
+      // Simulate payment processing delay
+      setTimeout(() => {
+        // Store booking data
+        const bookings = JSON.parse(localStorage.getItem('hotelBookings') || '[]');
+        bookings.push(paymentData);
+        localStorage.setItem('hotelBookings', JSON.stringify(bookings));
+        
+        // Show success message
+        paymentContent.innerHTML = `
+          <div class="text-center py-8">
+            <div class="text-green-500 text-6xl mb-4">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-green-600">Payment Successful!</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">
+              Your booking at ${hotel.name} has been confirmed.
+            </p>
+            <p class="text-sm text-gray-500 mb-4">
+              Confirmation details have been sent to your email.
+            </p>
+            <div class="flex gap-2">
+              <button onclick="downloadBookingConfirmation('${hotel.name}', ${amount})" 
+                      class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors">
+                <i class="fas fa-download mr-1"></i>
+                Download Confirmation
+              </button>
+              <button onclick="closePaymentModal()" 
+                      class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition-colors">
+                Close
+              </button>
+            </div>
+          </div>
+        `;
+      }, 2000);
+    }
+
+    function downloadBookingConfirmation(hotelName, amount) {
+      const confirmationText = `
+INZU PLATFORM - HOTEL BOOKING CONFIRMATION
+
+Hotel: ${hotelName}
+Amount Paid: ${amount}
+Booking Date: ${new Date().toLocaleDateString()}
+Confirmation Number: INZ${Date.now()}
+
+Thank you for booking with INZU Platform!
+
+Contact: support@inzu.rw
+Phone: +250 788 123 456
+      `;
+      
+      const blob = new Blob([confirmationText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `INZU_Booking_Confirmation_${Date.now()}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('paymentModal').addEventListener('click', (e) => {
+      if (e.target.id === 'paymentModal') {
+        closePaymentModal();
+      }
+    });
   </script>
-<script>
-  const form = document.getElementById('schedulerForm');
-  const previewBox = document.getElementById('previewBox');
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = collectFormData();
-    
-    // Save locally
-    const appointmentData = {
-      ...formData,
-      timestamp: new Date().toISOString()
-    };
-    localStorage.setItem('lastAppointment', JSON.stringify(appointmentData));
-    
-    // Send email
-    sendAppointmentEmail(formData);
-  });
+  <script>
+    const form = document.getElementById('schedulerForm');
+    const previewBox = document.getElementById('previewBox');
 
-  function collectFormData() {
-    const listings = Array.from(document.querySelectorAll('#listingOptions input:checked')).map(cb => cb.value);
-    return {
-      title: document.getElementById('title').value,
-      date: document.getElementById('date').value,
-      time: document.getElementById('time').value,
-      attendees: document.getElementById('attendees').value,
-      ussd: document.getElementById('ussdOption').value,
-      listings
-    };
-  }
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = collectFormData();
+      
+      // Save locally
+      const appointmentData = {
+        ...formData,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Send email
+      sendAppointmentEmail(formData);
+    });
 
-  function sendAppointmentEmail(data) {
-    const ussdOptions = {
-      '1': '1. Book Health Appointment',
-      '2': '2. Schedule Transport',
-      '3': '3. Community Meeting',
-      '4': '4. Book Accommodation',
-      '5': '5. View Bookings',
-      '0': '0. Exit'
-    };
+    function collectFormData() {
+      const listings = Array.from(document.querySelectorAll('#listingOptions input:checked')).map(cb => cb.value);
+      return {
+        title: document.getElementById('title').value,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        attendees: document.getElementById('attendees').value,
+        ussd: document.getElementById('ussdOption').value,
+        listings
+      };
+    }
 
-    const emailSubject = encodeURIComponent(`INZU Appointment: ${data.title}`);
-    const emailBody = encodeURIComponent(`
+    function sendAppointmentEmail(data) {
+      const ussdOptions = {
+        '1': '1. Book Health Appointment',
+        '2': '2. Schedule Transport',
+        '3': '3. Community Meeting',
+        '4': '4. Book Accommodation',
+        '5': '5. View Bookings',
+        '0': '0. Exit'
+      };
+
+      const emailSubject = encodeURIComponent(`INZU Appointment: ${data.title}`);
+      const emailBody = encodeURIComponent(`
 New appointment scheduled through INZU Platform:
 
 Title: ${data.title}
@@ -337,39 +730,44 @@ Scheduled at: ${new Date().toLocaleString()}
 
 ---
 Sent from INZU Platform
-    `);
+      `);
 
-    const mailtoLink = `mailto:ewpmagazine7@gmail.com?subject=${emailSubject}&body=${emailBody}`;
-    
-    // Try to open email client
-    window.location.href = mailtoLink;
-    
-    // Show success message
-    alert('Email client opened! Please send the email to complete the appointment scheduling.');
-  }
+      const mailtoLink = `mailto:ewpmagazine7@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+      
+      // Try to open email client
+      window.location.href = mailtoLink;
+      
+      // Show success message
+      alert('Email client opened! Please send the email to complete the appointment scheduling.');
+    }
 
-  function previewSchedule() {
-    const data = collectFormData();
-    const ussdOptions = {
-      '1': '1. Book Health Appointment',
-      '2': '2. Schedule Transport',
-      '3': '3. Community Meeting',
-      '4': '4. Book Accommodation',
-      '5': '5. View Bookings',
-      '0': '0. Exit'
-    };
-    
-    previewBox.classList.remove('hidden');
-    previewBox.innerHTML = `
-      <h3 class="font-bold mb-2 text-lg">Preview Summary</h3>
-      <p><strong>Title:</strong> ${data.title}</p>
-      <p><strong>Date:</strong> ${data.date}</p>
-      <p><strong>Time:</strong> ${data.time}</p>
-      <p><strong>Attendees:</strong> ${data.attendees || 'None specified'}</p>
-      <p><strong>USSD Option:</strong> ${ussdOptions[data.ussd] || data.ussd}</p>
-      <p><strong>Listings:</strong> ${data.listings.join(', ') || 'None'}</p>
-    `;
-  }
-</script>
+    function previewSchedule() {
+      const data = collectFormData();
+      const ussdOptions = {
+        '1': '1. Book Health Appointment',
+        '2': '2. Schedule Transport',
+        '3': '3. Community Meeting',
+        '4': '4. Book Accommodation',
+        '5': '5. View Bookings',
+        '0': '0. Exit'
+      };
+      
+      previewBox.classList.remove('hidden');
+      previewBox.innerHTML = `
+        <h3 class="font-bold mb-2 text-lg">Preview Summary</h3>
+        <p><strong>Title:</strong> ${data.title}</p>
+        <p><strong>Date:</strong> ${data.date}</p>
+        <p><strong>Time:</strong> ${data.time}</p>
+        <p><strong>Attendees:</strong> ${data.attendees || 'None specified'}</p>
+        <p><strong>USSD Option:</strong> ${ussdOptions[data.ussd] || data.ussd}</p>
+        <p><strong>Listings:</strong> ${data.listings.join(', ') || 'None'}</p>
+      `;
+    }
+
+    // Initialize with scheduler tab active
+    document.addEventListener('DOMContentLoaded', function() {
+      showTab('scheduler');
+    });
+  </script>
 </body>
 </html>
