@@ -1348,5 +1348,114 @@ Phone: +250 788 123 456
       initializeAuth();
     });
   </script>
+
+
+<!-- INTEGRATED: Admin Dashboard, Profile, USSD Simulator, Toast, Spinner -->
+<div class="my-8">
+  <ul class="flex border-b mb-4">
+    <li><button onclick="showTab('admin')" class="px-4 py-2 font-semibold" id="tab-admin">Admin</button></li>
+    <li><button onclick="showTab('profile')" class="px-4 py-2 font-semibold" id="tab-profile">Profile</button></li>
+    <li><button onclick="showTab('ussd')" class="px-4 py-2 font-semibold" id="tab-ussd">USSD</button></li>
+  </ul>
+
+  <div id="panel-admin" class="mt-6 hidden">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+      <h2 class="text-xl font-bold mb-4">Admin Dashboard</h2>
+      <ul>
+        <li>📊 Bookings Today: <span id="analyticsBookings">0</span></li>
+        <li>🏨 Hotels: <button onclick="alert('Hotel manager coming soon')">Manage</button></li>
+        <li>📅 All Bookings: <button onclick="alert('Bookings UI coming soon')">View</button></li>
+        <li>👥 Users: <button onclick="alert('User manager coming soon')">Manage</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="panel-profile" class="mt-6 hidden">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+      <h2 class="text-xl font-bold mb-4">Profile</h2>
+      <p><strong>Name:</strong> <span id="profileName">John Doe</span></p>
+      <p><strong>Email:</strong> <span id="profileEmail">john@example.com</span></p>
+      <button onclick="document.getElementById('profileEdit').style.display='block'">Edit</button>
+      <div id="profileEdit" style="display:none;" class="mt-4 space-y-2">
+        <input id="editName" class="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600" placeholder="New Name" />
+        <input id="editEmail" class="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600" placeholder="New Email" />
+        <button onclick="saveProfile()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-ussd" class="mt-6 hidden">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+      <h2 class="text-xl font-bold mb-4">USSD Simulator</h2>
+      <div class="ussd-screen bg-black text-green-400 p-4 rounded font-mono mb-4 min-h-[80px]" id="ussdDisplay">Dial *182# to begin</div>
+      <input id="ussdInput" placeholder="Enter option..." class="w-full p-2 mb-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+      <button onclick="handleUSSD()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Send</button>
+    </div>
+  </div>
+
+  <div id="toastBanner" class="toast fixed hidden right-4 bottom-4 bg-green-500 text-white px-4 py-2 rounded shadow"></div>
+</div>
+
+<script>
+  function showToast(msg) {
+    const toast = document.getElementById('toastBanner');
+    toast.textContent = msg;
+    toast.classList.remove('hidden');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+  }
+
+  function saveProfile() {
+    const name = document.getElementById('editName').value;
+    const email = document.getElementById('editEmail').value;
+    if (name) document.getElementById('profileName').textContent = name;
+    if (email) document.getElementById('profileEmail').textContent = email;
+    document.getElementById('profileEdit').style.display = 'none';
+    showToast('Profile updated!');
+  }
+
+  let ussdStep = 0;
+  function handleUSSD() {
+    const input = document.getElementById('ussdInput').value.trim();
+    const display = document.getElementById('ussdDisplay');
+
+    if (ussdStep === 0 && input === '*182#') {
+      display.textContent = '1. Book Appointment\n2. Hotel Booking\n0. Exit';
+      ussdStep = 1;
+    } else if (ussdStep === 1) {
+      if (input === '1') {
+        display.textContent = 'Enter appointment title:';
+        ussdStep = 2;
+      } else if (input === '2') {
+        display.textContent = 'Enter hotel name:';
+        ussdStep = 3;
+      } else {
+        display.textContent = 'Exited. Dial *182# again.';
+        ussdStep = 0;
+      }
+    } else if (ussdStep >= 2) {
+      display.textContent = \`You entered: \${input}\nThank you!\`;
+      ussdStep = 0;
+    } else {
+      display.textContent = 'Invalid input. Dial *182# to try again.';
+      ussdStep = 0;
+    }
+    document.getElementById('ussdInput').value = '';
+  }
+
+  function showTab(tab) {
+    const panels = ['scheduler', 'mbaza', 'hotels', 'bookings', 'admin', 'profile', 'ussd'];
+    panels.forEach(t => {
+      const el = document.getElementById('panel-' + t);
+      if (el) el.classList.add('hidden');
+      const tabBtn = document.getElementById('tab-' + t);
+      if (tabBtn) tabBtn.classList.remove('text-blue-500', 'border-b-2', 'border-blue-500');
+    });
+    const activePanel = document.getElementById('panel-' + tab);
+    if (activePanel) activePanel.classList.remove('hidden');
+    const activeTab = document.getElementById('tab-' + tab);
+    if (activeTab) activeTab.classList.add('text-blue-500', 'border-b-2', 'border-blue-500');
+  }
+</script>
 </body>
 </html>
