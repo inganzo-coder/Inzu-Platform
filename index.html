@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+
+<html class="light" lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INZU Platform – Scheduler, MbazaDi & Hotels</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>INZU Platform – Scheduler, MbazaDi &amp; Hotels</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
     tailwind.config = { darkMode: 'class' };
   </script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
+<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
     :root {
       --bg: #f9fafb;
       --text: #1f2937;
@@ -57,168 +58,417 @@
     .modal {
       backdrop-filter: blur(4px);
     }
-  </style>
-</head>
+  
+
+:root {
+  --bg: linear-gradient(to right, #f8fafc, #e2e8f0);
+  --text: #1a202c;
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --accent: #14b8a6;
+  --glass: rgba(255, 255, 255, 0.25);
+  --blur: blur(12px);
+  --radius: 1rem;
+}
+
+html.dark {
+  --bg: linear-gradient(to right, #1f2937, #111827);
+  --text: #f9fafb;
+  --glass: rgba(31, 41, 55, 0.4);
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Segoe UI', sans-serif;
+  backdrop-filter: var(--blur);
+}
+
+.card, .modal, .shadow, .rounded {
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+button, input, select, textarea {
+  border-radius: 0.75rem !important;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+
+nav.sticky-nav {
+  position: sticky;
+  top: 0;
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  z-index: 50;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --primary: #1e40af;
+  --primary-hover: #1e40af;
+  --accent: #222222;
+  --radius: 0.75rem;
+  --input-bg: #f7f7f7;
+  --input-border: #dddddd;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+html.dark {
+  --bg: #111111;
+  --text: #ffffff;
+  --input-bg: #1c1c1c;
+  --input-border: #333333;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.card, .modal, .shadow {
+  background: var(--bg);
+  box-shadow: var(--card-shadow);
+  border-radius: var(--radius);
+  padding: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+button {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.03);
+}
+
+input, select, textarea {
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  transition: border-color 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: var(--accent);
+  color: #fff;
+  text-align: center;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  opacity: 0;
+  transition: opacity 0.3s;
+  width: max-content;
+  max-width: 240px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.icon-btn i {
+  margin-right: 0.5rem;
+}
+
+
+/* Fade in + slide animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Apply animations to components */
+.card, .modal, .shadow {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+button, input, select, textarea {
+  animation: fadeInScale 0.4s ease-in-out;
+}
+
+.modal {
+  animation: fadeInScale 0.3s ease-in-out;
+}
+
+.tooltip .tooltiptext {
+  animation: fadeInUp 0.3s ease-in-out;
+}
+
+
+:root {
+  --primary: #7c3aed; /* purple */
+  --primary-hover: #6b21a8;
+  --accent: #4c1d95;
+  --bg: #ffffff;
+  --text: #1f1f1f;
+  --card-bg: #fafafa;
+  --input-bg: #f4f4f5;
+  --border-color: #e4e4e7;
+}
+
+html.dark {
+  --bg: #1a1a1a;
+  --text: #f4f4f5;
+  --card-bg: #2a2a2a;
+  --input-bg: #2f2f2f;
+  --border-color: #3f3f46;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+section.form-section {
+  margin-bottom: 2rem;
+}
+
+.section-heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+input, select, textarea {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  margin-top: 0.25rem;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+}
+
+footer {
+  background-color: var(--card-bg);
+  color: var(--text);
+  padding: 2rem 1rem;
+  margin-top: 4rem;
+  text-align: center;
+  font-size: 0.875rem;
+  border-top: 1px solid var(--border-color);
+}
+
+footer a {
+  color: var(--primary);
+  margin: 0 0.5rem;
+  text-decoration: none;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script></head>
 <body class="text-gray-800 dark:text-gray-200">
-  <div class="container mx-auto p-6">
-    <div class="flex justify-between mb-6">
-      <h1 class="text-2xl font-bold">INZU Platform</h1>
-      <div class="flex gap-2 items-center">
-        <div id="authSection">
-          <button id="loginBtn" class="px-3 py-1 bg-blue-500 text-white rounded">Login</button>
-          <button id="signupBtn" class="px-3 py-1 bg-green-500 text-white rounded">Sign Up</button>
-          <div id="userInfo" class="hidden">
-            <span id="usernameDisplay"></span>
-            <button id="logoutBtn" class="px-3 py-1 bg-red-500 text-white rounded">Logout</button>
-          </div>
-        </div>
-        <label for="langToggle">🌍</label>
-        <select id="langToggle" onchange="setMbazaLang(this.value)" class="bg-gray-200 dark:bg-gray-700 rounded px-2 py-1">
-          <option value="en">EN</option>
-          <option value="rw">RW</option>
-        </select>
-        <button onclick="document.documentElement.classList.toggle('dark')" class="ml-2 px-3 py-1 bg-gray-300 dark:bg-gray-600 rounded">🌙</button>
-      </div>
-    </div>
-
-    <ul class="flex border-b">
-      <li><button onclick="showTab('scheduler')" class="px-4 py-2 font-semibold text-blue-500 border-b-2 border-blue-500" id="tab-scheduler">Scheduler</button></li>
-      <li><button onclick="showTab('mbaza')" class="px-4 py-2 font-semibold" id="tab-mbaza">Fake News Detector</button></li>
-      <li><button onclick="showTab('hotels')" class="px-4 py-2 font-semibold" id="tab-hotels">Hotels</button></li>
-      <li><button onclick="showTab('bookings')" class="px-4 py-2 font-semibold" id="tab-bookings">My Bookings</button></li>
-    </ul>
-
-    <div id="panel-scheduler" class="mt-6">
-      <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 class="text-xl font-semibold mb-4"><i class="fas fa-calendar-alt text-blue-500"></i> INZU Rwanda Scheduler</h2>
-        <form id="schedulerForm" class="space-y-6">
-          <div>
-            <label for="title" class="block font-medium">Appointment Title</label>
-            <input type="text" id="title" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" placeholder="e.g. Team meeting">
-          </div>
-          <div>
-            <label for="date" class="block font-medium">Date</label>
-            <input type="date" id="date" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
-          </div>
-          <div>
-            <label for="time" class="block font-medium">Time</label>
-            <input type="time" id="time" required class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
-          </div>
-          <div>
-            <label for="attendees" class="block font-medium">Attendees (comma-separated emails)</label>
-            <input type="text" id="attendees" class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" placeholder="example@inzu.rw, test@example.com">
-          </div>
-          <div>
-            <label for="ussdOption" class="block font-medium">USSD Option</label>
-            <select id="ussdOption" class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded">
-              <option value="1">1. Book Health Appointment</option>
-              <option value="2">2. Schedule Transport</option>
-              <option value="3">3. Community Meeting</option>
-              <option value="4">4. Book Accommodation</option>
-              <option value="5">5. View Bookings</option>
-              <option value="0">0. Exit</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-medium mb-2">Listings</label>
-            <div class="grid grid-cols-2 gap-4" id="listingOptions">
-              <label class="flex items-center"><input type="checkbox" class="mr-2" value="Gorilla Trekking" /> Gorilla Trekking</label>
-              <label class="flex items-center"><input type="checkbox" class="mr-2" value="Lake Kivu" /> Lake Kivu</label>
-              <label class="flex items-center"><input type="checkbox" class="mr-2" value="Kigali" /> Kigali</label>
-              <label class="flex items-center"><input type="checkbox" class="mr-2" value="Coffee Tours" /> Coffee Tours</label>
-              <label class="flex items-center"><input type="checkbox" class="mr-2" value="Cultural Village" /> Cultural Village</label>
-              <label class="flex items-center"><input type="checkbox" class="mr-2" value="Tea Plantations" /> Tea Plantations</label>
-              <label class="flex items-center"><input type="checkbox" class="mr-2" value="Nyungwe Forest" /> Nyungwe Forest</label>
-              <label class="flex items-center"><input type="checkbox" class="mr-2" value="WiFi" /> WiFi</label>
-              <label class="flex items-center"><input type="checkbox" class="mr-2" value="Meals Included" /> Meals Included</label>
-            </div>
-          </div>
-          <div>
-            <button type="button" onclick="previewSchedule()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded mr-2">Preview Summary</button>
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Schedule Appointment</button>
-          </div>
-        </form>
-        <div id="previewBox" class="mt-4 p-4 border rounded bg-gray-50 dark:bg-gray-700 hidden"></div>
-      </div>
-    </div>
-
-    <div id="panel-mbaza" class="mt-6 hidden">
-      <div id="mbazaDiRoot"></div>
-    </div>
-
-    <div id="panel-hotels" class="mt-6 hidden">
-      <div id="hotelsRoot"></div>
-    </div>
-
-    <div id="panel-bookings" class="mt-6 hidden">
-      <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 class="text-xl font-bold mb-4"><i class="fas fa-bookmark text-blue-500"></i> My Bookings</h2>
-        <div id="bookingsList" class="space-y-4"></div>
-      </div>
-    </div>
-
-    <!-- Payment Modal -->
-    <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 modal hidden flex items-center justify-center z-50">
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold">Complete Payment</h3>
-          <button onclick="closePaymentModal()" class="text-gray-500 hover:text-gray-700">×</button>
-        </div>
-        <div id="paymentContent"></div>
-      </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 modal hidden flex items-center justify-center z-50">
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold">Login</h3>
-          <button onclick="closeAuthModal('loginModal')" class="text-gray-500 hover:text-gray-700">×</button>
-        </div>
-        <form id="loginForm" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium mb-1">Email</label>
-            <input type="email" id="loginEmail" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required>
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-1">Password</label>
-            <input type="password" id="loginPassword" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required>
-          </div>
-          <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded">Login</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Signup Modal -->
-    <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 modal hidden flex items-center justify-center z-50">
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold">Sign Up</h3>
-          <button onclick="closeAuthModal('signupModal')" class="text-gray-500 hover:text-gray-700">×</button>
-        </div>
-        <form id="signupForm" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium mb-1">Username</label>
-            <input type="text" id="signupUsername" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required>
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-1">Email</label>
-            <input type="email" id="signupEmail" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required>
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-1">Password</label>
-            <input type="password" id="signupPassword" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" required>
-          </div>
-          <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded">Sign Up</button>
-        </form>
-      </div>
-    </div>
-
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <script type="text/babel">
+<div class="container mx-auto p-6">
+<div class="flex justify-between mb-6">
+<h1 class="text-2xl font-bold">INZU Platform</h1>
+<div class="flex gap-2 items-center">
+<div id="authSection">
+<button class="px-3 py-1 bg-blue-500 text-white rounded" id="loginBtn">Login</button>
+<button class="px-3 py-1 bg-green-500 text-white rounded" id="signupBtn">Sign Up</button>
+<div class="hidden" id="userInfo">
+<span id="usernameDisplay"></span>
+<button class="px-3 py-1 bg-red-500 text-white rounded" id="logoutBtn">Logout</button>
+</div>
+</div>
+<label for="langToggle">🌍</label>
+<select class="bg-gray-200 dark:bg-gray-700 rounded px-2 py-1" id="langToggle" onchange="setMbazaLang(this.value)">
+<option value="en">EN</option>
+<option value="rw">RW</option>
+</select>
+<button class="ml-2 px-3 py-1 bg-gray-300 dark:bg-gray-600 rounded" onclick="document.documentElement.classList.toggle('dark')">🌙</button>
+</div>
+</div>
+<ul class="flex border-b">
+<li><button class="px-4 py-2 font-semibold text-blue-500 border-b-2 border-blue-500" id="tab-scheduler" onclick="showTab('scheduler')">Scheduler</button></li>
+<li><button class="px-4 py-2 font-semibold" id="tab-mbaza" onclick="showTab('mbaza')">Fake News Detector</button></li>
+<li><button class="px-4 py-2 font-semibold" id="tab-hotels" onclick="showTab('hotels')">Hotels</button></li>
+<li><button class="px-4 py-2 font-semibold" id="tab-bookings" onclick="showTab('bookings')">My Bookings</button></li>
+</ul>
+<div class="mt-6" id="panel-scheduler">
+<div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+<h2 class="text-xl font-semibold mb-4"><i class="fas fa-calendar-alt text-blue-500"></i> INZU Rwanda Scheduler</h2>
+<form class="space-y-6" id="schedulerForm">
+<div>
+<label class="block font-medium" for="title">Appointment Title</label>
+<input class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" id="title" placeholder="e.g. Team meeting" required="" type="text"/>
+</div>
+<div>
+<label class="block font-medium" for="date">Date</label>
+<input class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" id="date" required="" type="date"/>
+</div>
+<div>
+<label class="block font-medium" for="time">Time</label>
+<input class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" id="time" required="" type="time"/>
+</div>
+<div>
+<label class="block font-medium" for="attendees">Attendees (comma-separated emails)</label>
+<input class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" id="attendees" placeholder="example@inzu.rw, test@example.com" type="text"/>
+</div>
+<div>
+<label class="block font-medium" for="ussdOption">USSD Option</label>
+<select class="w-full px-3 py-2 border dark:border-gray-600 dark:bg-gray-700 rounded" id="ussdOption">
+<option value="1">1. Book Health Appointment</option>
+<option value="2">2. Schedule Transport</option>
+<option value="3">3. Community Meeting</option>
+<option value="4">4. Book Accommodation</option>
+<option value="5">5. View Bookings</option>
+<option value="0">0. Exit</option>
+</select>
+</div>
+<div>
+<label class="block font-medium mb-2">Listings</label>
+<div class="grid grid-cols-2 gap-4" id="listingOptions">
+<label class="flex items-center"><input class="mr-2" type="checkbox" value="Gorilla Trekking"> Gorilla Trekking</input></label>
+<label class="flex items-center"><input class="mr-2" type="checkbox" value="Lake Kivu"> Lake Kivu</input></label>
+<label class="flex items-center"><input class="mr-2" type="checkbox" value="Kigali"> Kigali</input></label>
+<label class="flex items-center"><input class="mr-2" type="checkbox" value="Coffee Tours"> Coffee Tours</input></label>
+<label class="flex items-center"><input class="mr-2" type="checkbox" value="Cultural Village"/> Cultural Village</label>
+<label class="flex items-center"><input class="mr-2" type="checkbox" value="Tea Plantations"/> Tea Plantations</label>
+<label class="flex items-center"><input class="mr-2" type="checkbox" value="Nyungwe Forest"/> Nyungwe Forest</label>
+<label class="flex items-center"><input class="mr-2" type="checkbox" value="WiFi"/> WiFi</label>
+<label class="flex items-center"><input class="mr-2" type="checkbox" value="Meals Included"/> Meals Included</label>
+</div>
+</div>
+<div>
+<button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded mr-2" onclick="previewSchedule()" type="button">Preview Summary</button>
+<button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded" type="submit">Schedule Appointment</button>
+</div>
+</form>
+<div class="mt-4 p-4 border rounded bg-gray-50 dark:bg-gray-700 hidden" id="previewBox"></div>
+</div>
+</div>
+<div class="mt-6 hidden" id="panel-mbaza">
+<div id="mbazaDiRoot"></div>
+</div>
+<div class="mt-6 hidden" id="panel-hotels">
+<div id="hotelsRoot"></div>
+</div>
+<div class="mt-6 hidden" id="panel-bookings">
+<div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+<h2 class="text-xl font-bold mb-4"><i class="fas fa-bookmark text-blue-500"></i> My Bookings</h2>
+<div class="space-y-4" id="bookingsList"></div>
+</div>
+</div>
+<!-- Payment Modal -->
+<div class="fixed inset-0 bg-black bg-opacity-50 modal hidden flex items-center justify-center z-50" id="paymentModal">
+<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-lg font-bold">Complete Payment</h3>
+<button class="text-gray-500 hover:text-gray-700" onclick="closePaymentModal()">×</button>
+</div>
+<div id="paymentContent"></div>
+</div>
+</div>
+<!-- Login Modal -->
+<div class="fixed inset-0 bg-black bg-opacity-50 modal hidden flex items-center justify-center z-50" id="loginModal">
+<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-lg font-bold">Login</h3>
+<button class="text-gray-500 hover:text-gray-700" onclick="closeAuthModal('loginModal')">×</button>
+</div>
+<form class="space-y-4" id="loginForm">
+<div>
+<label class="block text-sm font-medium mb-1">Email</label>
+<input class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" id="loginEmail" required="" type="email"/>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1">Password</label>
+<input class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" id="loginPassword" required="" type="password"/>
+</div>
+<button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded" type="submit">Login</button>
+</form>
+</div>
+</div>
+<!-- Signup Modal -->
+<div class="fixed inset-0 bg-black bg-opacity-50 modal hidden flex items-center justify-center z-50" id="signupModal">
+<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-lg font-bold">Sign Up</h3>
+<button class="text-gray-500 hover:text-gray-700" onclick="closeAuthModal('signupModal')">×</button>
+</div>
+<form class="space-y-4" id="signupForm">
+<div>
+<label class="block text-sm font-medium mb-1">Username</label>
+<input class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" id="signupUsername" required="" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1">Email</label>
+<input class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" id="signupEmail" required="" type="email"/>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1">Password</label>
+<input class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" id="signupPassword" required="" type="password"/>
+</div>
+<button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded" type="submit">Sign Up</button>
+</form>
+</div>
+</div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
     const translations = {
       en: {
         title: "Fake News Detector",
@@ -634,8 +884,7 @@ Generated by INZU Platform - MbazaDi Fake News Detector
     ReactDOM.createRoot(document.getElementById("mbazaDiRoot")).render(<MbazaApp />);
     ReactDOM.createRoot(document.getElementById("hotelsRoot")).render(<HotelsApp />);
   </script>
-
-  <script>
+<script>
     // Initialize EmailJS
     (function() {
       emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
@@ -1348,42 +1597,38 @@ Phone: +250 788 123 456
       initializeAuth();
     });
   </script>
-
-
 <!-- INTEGRATED: Admin Dashboard, Profile, USSD Simulator, Toast, Spinner -->
 <div class="my-8">
-  <ul class="flex border-b mb-4">
-    <li><button onclick="showTab('admin')" class="px-4 py-2 font-semibold" id="tab-admin">Admin</button></li>
-    <li><button onclick="showTab('profile')" class="px-4 py-2 font-semibold" id="tab-profile">Profile</button></li>
-    <li><button onclick="showTab('ussd')" class="px-4 py-2 font-semibold" id="tab-ussd">USSD</button></li>
-  </ul>
-
-  <div id="panel-admin" class="mt-6 hidden">
-    <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
-      <h2 class="text-xl font-bold mb-4">Admin Dashboard</h2>
-      <ul>
-        <li>📊 Bookings Today: <span id="analyticsBookings">0</span></li>
-        <li>🏨 Hotels: <button onclick="alert('Hotel manager coming soon')">Manage</button></li>
-        <li>📅 All Bookings: <button onclick="alert('Bookings UI coming soon')">View</button></li>
-        <li>👥 Users: <button onclick="alert('User manager coming soon')">Manage</button></li>
-      </ul>
-    </div>
-  </div>
-
-  <div id="panel-profile" class="mt-6 hidden">
-  <div class="bg-white dark:bg-gray-800 p-6 rounded shadow" id="profileSection">
-    <h2 class="text-xl font-bold mb-4">Profile</h2>
-    <form class="space-y-4">
-      <div>
-        <label class="block font-medium">Name</label>
-        <input id="editName" class="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600" oninput="autoSaveProfile()" />
-      </div>
-      <div>
-        <label class="block font-medium">Email</label>
-        <input id="editEmail" class="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600" oninput="autoSaveProfile()" />
-      </div>
-    </form>
-    <script>
+<ul class="flex border-b mb-4">
+<li><button class="px-4 py-2 font-semibold" id="tab-admin" onclick="showTab('admin')">Admin</button></li>
+<li><button class="px-4 py-2 font-semibold" id="tab-profile" onclick="showTab('profile')">Profile</button></li>
+<li><button class="px-4 py-2 font-semibold" id="tab-ussd" onclick="showTab('ussd')">USSD</button></li>
+</ul>
+<div class="mt-6 hidden" id="panel-admin">
+<div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+<h2 class="text-xl font-bold mb-4">Admin Dashboard</h2>
+<ul>
+<li>📊 Bookings Today: <span id="analyticsBookings">0</span></li>
+<li>🏨 Hotels: <button onclick="alert('Hotel manager coming soon')">Manage</button></li>
+<li>📅 All Bookings: <button onclick="alert('Bookings UI coming soon')">View</button></li>
+<li>👥 Users: <button onclick="alert('User manager coming soon')">Manage</button></li>
+</ul>
+</div>
+</div>
+<div class="mt-6 hidden" id="panel-profile">
+<div class="bg-white dark:bg-gray-800 p-6 rounded shadow" id="profileSection">
+<h2 class="text-xl font-bold mb-4">Profile</h2>
+<form class="space-y-4">
+<div>
+<label class="block font-medium">Name</label>
+<input class="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600" id="editName" oninput="autoSaveProfile()">
+</input></div>
+<div>
+<label class="block font-medium">Email</label>
+<input class="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600" id="editEmail" oninput="autoSaveProfile()">
+</input></div>
+</form>
+<script>
       function autoSaveProfile() {
         const name = document.getElementById("editName").value;
         const email = document.getElementById("editEmail").value;
@@ -1397,19 +1642,17 @@ Phone: +250 788 123 456
         document.getElementById("editEmail").value = localStorage.getItem("profileEmail") || "john@example.com";
       });
     </script>
+<div class="mt-6 hidden" id="panel-ussd">
+<div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+<h2 class="text-xl font-bold mb-4">USSD Simulator</h2>
+<div class="ussd-screen bg-black text-green-400 p-4 rounded font-mono mb-4 min-h-[80px]" id="ussdDisplay">Dial *182# to begin</div>
+<input class="w-full p-2 mb-2 border rounded dark:bg-gray-700 dark:border-gray-600" id="ussdInput" placeholder="Enter option...">
+<a href="tel:*182#" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded inline-block">Call</a>
 
-  <div id="panel-ussd" class="mt-6 hidden">
-    <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
-      <h2 class="text-xl font-bold mb-4">USSD Simulator</h2>
-      <div class="ussd-screen bg-black text-green-400 p-4 rounded font-mono mb-4 min-h-[80px]" id="ussdDisplay">Dial *182# to begin</div>
-      <input id="ussdInput" placeholder="Enter option..." class="w-full p-2 mb-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-      <button onclick="handleUSSD()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Send</button>
-    </div>
-  </div>
-
-  <div id="toastBanner" class="toast fixed hidden right-4 bottom-4 bg-green-500 text-white px-4 py-2 rounded shadow"></div>
+</input></div>
 </div>
-
+<div class="toast fixed hidden right-4 bottom-4 bg-green-500 text-white px-4 py-2 rounded shadow" id="toastBanner"></div>
+</div>
 <script>
   function showToast(msg) {
     const toast = document.getElementById('toastBanner');
@@ -1471,5 +1714,26 @@ Phone: +250 788 123 456
     if (activeTab) activeTab.classList.add('text-blue-500', 'border-b-2', 'border-blue-500');
   }
 </script>
+</div></div></div><script>
+document.querySelectorAll('[id^="tab-"]').forEach(tabBtn => {
+  tabBtn.addEventListener('click', () => {
+    const tab = tabBtn.id.replace('tab-', '');
+    const panel = document.getElementById('panel-' + tab);
+    if (panel) {
+      gsap.fromTo(panel, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+    }
+  });
+});
+</script>
+<footer>
+<p>Connect with us:</p>
+<div>
+<a href="https://twitter.com" target="_blank">Twitter</a> |
+    <a href="https://facebook.com" target="_blank">Facebook</a> |
+    <a href="https://instagram.com" target="_blank">Instagram</a>
+</div>
+<p>INZU Platform
+Simplifying services for Rwanda</p>
+</footer>
 </body>
 </html>
